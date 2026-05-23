@@ -17,7 +17,7 @@ const rulesSchema = mongoose.Schema(
     permissions: {
       type: [
         {
-          type: String,
+          type: mongoose.Types.ObjectId,
           ref: "permissions",
         },
       ],

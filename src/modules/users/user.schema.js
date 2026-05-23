@@ -36,6 +36,9 @@ export const replacevalidatioSchema = userCreateValidationSchema.fork(
 );
 
 export const updateValidationSchema = userCreateValidationSchema
+  .append({
+    id: Joi.string().empty("").required()
+  })
   .fork(["first_name", "last_name", "email", "username", "password"], (schema) =>
     schema.optional().empty(" ").messages({
       "string.empty": "{#label} required",

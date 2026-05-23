@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs";
 import feildsMapping from "../../utils/feildsMapping.js";
 import * as StringHelpers from "../../utils/stringHelpers.js";
 import mongoosePaginate from "mongoose-paginate-v2";
-import { string } from "joi";
+import Roles from "./roles.model.js";
 
 const allowedFeilds = ["first_name", "last_name", "email", "username"];
 
@@ -29,9 +29,10 @@ userSchema.pre("save", async function () {
   }
 });
 
-userSchema.pre("save", function () {
+userSchema.pre("save",  async function () {
   if (!this.isModified("roles")) {
-    this.roles = this.roles.push("6a0eef23832c1031cbbdcf9d");
+    const userRole = await Roles.findOne({name:"user"})
+    this.roles = this.roles.push(userRole._id);
   }
 });
 
@@ -52,11 +53,13 @@ userSchema.statics.smartPaginate = function (query) {
     page: parseInt(page),
     limit: parseInt(limit),
     sort: orderBy ? StringHelpers.replaceCommasWithSpaces(orderBy) : "-createdAt",
-    populate: includes ? string.trimmingAndConvertToArray(includes) : [],
+    populate: includes ? StringHelpers.trimmingAndConvertToArray(includes) : [],
   };
 
   return this.paginate(filterObject, options);
 };
+
+
 
 const User = mongoose.model("users", userSchema);
 
