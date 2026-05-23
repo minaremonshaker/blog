@@ -15,7 +15,6 @@ const authorize = (permission) => {
     if (isAdmin && hasAdminManage) return next();
     if (permission.some((permission) => permission.endsWith("_own")) && req.user._id == id)
       return next();
-    
     return res.status(401).json({ success: false, message: "unauthorized" });
   });
 };
