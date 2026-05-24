@@ -5,8 +5,6 @@ import { da } from "@faker-js/faker";
 const globalErrorHandler = async (err, req, res, next) => {
   let errors = {};
 
-  console.log(err)
-
   if (err.name === "ValidationError") {
     if (err.errors) {
       for (const element of Object.values(err.errors)) {

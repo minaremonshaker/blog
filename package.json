@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon --env-file=.env.development server.js"
+    "dev": "nodemon --env-file=.env.development server.js",
+    "dev:generate-internal-token" : "node --env-file=.env.development ./src/utils/generateToken.js"
   },
   "keywords": [],
   "author": "",

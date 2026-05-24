@@ -1,6 +1,6 @@
 import User from "../../db/models/users.model.js";
 import Address from "../../db/models/addresses.model.js";
-import * as optHelpers from '../../utils/otpHelpers.js';
+import * as optHelpers from "../../utils/otpHelpers.js";
 
 export const index = async (req, res, next) => {
   const users = await User.smartPaginate(req.query);
@@ -20,9 +20,11 @@ export const index = async (req, res, next) => {
 
 export const show = async (req, res, next) => {
   const { id } = req.params;
+  const token = req.headers.authorization;
+  console.log(token)
   const user = await User.findById(id).populate("addresses");
   if (!user) return res.status(404).json({ success: false, message: "user not found" });
-  await optHelpers.generateOtp(user.email,'registration');
+  await optHelpers.generateOtp(user.email, "registration", token);
   return res.json({
     success: true,
     message: "user retrivied succefully",
@@ -93,4 +95,17 @@ export const destroy = async (req, res, next) => {
   if (!deletedUser) return res.status(404).json({ success: false, message: "user not found" });
 
   return res.json({ success: true, message: "user deleted succefully" });
+};
+
+export const assignRoleToUser = async (req, res, next) => {
+  const { id } = req.params;
+  const { roles } = req.body;
+  const updatedUser = await User.findOneAndUpdate(
+    { _id: id },
+    { $addToSet: { roles: { $each: roles } } },
+    { returnDocument: "after" },
+  );
+  if (!updatedUser) return res.status(404).json({ success: false, message: "user not found" });
+
+  return res.json({ success: true, message: "role assigned" });
 };

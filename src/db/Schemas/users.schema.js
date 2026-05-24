@@ -42,7 +42,12 @@ const userSchema = mongoose.Schema(
       default: false,
     },
     roles: {
-      type: [{ type: mongoose.Types.ObjectId, ref: "roles" }],
+      type: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "roles",
+        },
+      ],
       default: [],
     },
     password: {

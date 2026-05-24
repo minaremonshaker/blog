@@ -50,3 +50,5 @@ export const assignPermissionsToRole = async(req, res, next) => {
   await role.save()
   return res.json({ success: true, message: "permissions assigned" });
 };
+
+

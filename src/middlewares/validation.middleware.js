@@ -11,7 +11,6 @@ const validation = (schema) => {
         "string.pattern.name": "Password must contain at least one {#name}",
       },
     });
-
     
     next();
   });

@@ -1,5 +1,13 @@
 import Joi from "joi";
 import User from "../../db/models/users.model.js";
+import mongoose from "mongoose";
+
+const validateObjectId = (value, helpers) => {
+  if (!mongoose.isValidObjectId(value)) {
+    return helpers.message("please add a vaild object id");
+  }
+  return value;
+};
 
 export const userCreateValidationSchema = Joi.object({
   first_name: Joi.string().empty("").required().trim().lowercase(),
@@ -37,7 +45,7 @@ export const replacevalidatioSchema = userCreateValidationSchema.fork(
 
 export const updateValidationSchema = userCreateValidationSchema
   .append({
-    id: Joi.string().empty("").required()
+    id: Joi.string().empty("").required(),
   })
   .fork(["first_name", "last_name", "email", "username", "password"], (schema) =>
     schema.optional().empty(" ").messages({
@@ -50,10 +58,18 @@ export const updateValidationSchema = userCreateValidationSchema
   .messages({
     "any.empty": "{#label} is required",
     "any.required": "{#label} is required",
-  });;
+  });
 
 export const searchingValidationSchema = Joi.object({
   search: Joi.string().required(),
   searchBy: Joi.string().trim().replace(/,$/, ""),
   orderBy: Joi.string().trim().replace(/,/gi, " "),
+});
+
+export const assignRoleToUserValidatonSchema = Joi.object({
+  id: Joi.string().custom(validateObjectId).empty("").required(),
+  roles: Joi.array()
+    .items(Joi.string().custom(validateObjectId))
+    .min(1)
+    .required(),
 });

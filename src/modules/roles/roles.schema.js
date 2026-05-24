@@ -31,3 +31,5 @@ export const assignValidationShema = Joi.object({
   id: Joi.string().empty("").required().custom(validateObjectId),
   permissions: Joi.array().items(Joi.string().empty("").required().custom(validateObjectId))
 })
+
+
