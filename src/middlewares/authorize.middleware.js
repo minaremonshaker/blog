@@ -14,25 +14,22 @@ const authorize = (permissions) => {
     const roles = user.roles;
     const perm = roles.flatMap((role) => role.permissions);
     const providedPermissions = permissions;
+    const permissionIsAdminManage = perm.some((perm) => perm.name === "admin:manage");
+    const permissionEndWithOwn = perm.some(
+      (perm) => providedPermissions.includes(perm.name) && perm.name.endsWith("_own"),
+    );
+    const hasPermissions = perm.some((perm) => providedPermissions.includes(perm.name));
 
-    if (
-      !permissions &&
-      perm.some((perm) => {
-        return perm.name === "admin:manage";
-      })
-    ) {
+    if (permissionIsAdminManage) {
       return next();
     }
-    if (
-      permissions &&
-      perm.some((perm) => providedPermissions.includes(perm.name) && perm.name.endsWith("_own"))
-    ) {
+    if (permissions.length > 0 && permissionEndWithOwn) {
       if (user._id.toString() === id) {
         return next();
       }
       return res.status(403).json({ success: false, message: "Forbidden" });
     }
-    if (permissions && perm.some((perm) => providedPermissions.includes(perm.name))) {
+    if (permissions.length > 0 && hasPermissions) {
       return next();
     }
     return res.status(403).json({ success: false, message: "Forbidden" });

@@ -5,7 +5,10 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon --env-file=.env.development server.js",
-    "dev:generate-internal-token" : "node --env-file=.env.development ./src/utils/generateToken.js"
+    "dev:generate-internal-token": "node --env-file=.env.development ./src/utils/generateToken.js",
+    "debug": "node --inspect=0.0.0.0:9229 --env-file=.env.development server.js",
+    "debug:nodemon": "nodemon --env-file=.env.development --inspect=0.0.0.0:9229 server.js",
+    "debug:break": "node --inspect-brk=0.0.0.0:9229 --env-file=.env.development server.js"
   },
   "keywords": [],
   "author": "",

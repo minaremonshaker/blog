@@ -8,18 +8,13 @@ import emailVerfyied from "../../middlewares/emailVerfyied.middlreware.js";
 import authorize from "../../middlewares/authorize.middleware.js";
 
 const userRouter = Router({ mergeParams: true });
-userRouter.get(
-  "/",
-  Auth,
-  emailVerfyied,
-  authorize(),
-  requestsAsyncHandler(userService.index),
-);
+userRouter.get("/", Auth, emailVerfyied, authorize(), requestsAsyncHandler(userService.index));
 
 userRouter.post(
   "/",
   Auth,
   emailVerfyied,
+  authorize(["user:create"]),
   validation(schema.userCreateValidationSchema),
   requestsAsyncHandler(userService.store),
 );
@@ -35,6 +30,7 @@ userRouter.put(
   "/:id",
   Auth,
   emailVerfyied,
+  authorize(["user:replace"]),
   validation(schema.replacevalidatioSchema),
   requestsAsyncHandler(userService.replace),
 );
@@ -42,19 +38,16 @@ userRouter.patch(
   "/:id",
   Auth,
   emailVerfyied,
+ authorize(["user:update", 'user:update_own']),
   validation(schema.updateValidationSchema),
   requestsAsyncHandler(userService.update),
 );
-userRouter.delete(
-  "/:id",
-  Auth,
-  emailVerfyied,
-  requestsAsyncHandler(userService.destroy),
-);
+userRouter.delete("/:id", Auth, emailVerfyied, requestsAsyncHandler(userService.destroy));
 userRouter.post(
   "/:id/assign/role",
   Auth,
   emailVerfyied,
+  authorize(["user:delete", "user:delete_o"]),
   validation(schema.assignRoleToUserValidatonSchema),
   requestsAsyncHandler(userService.assignRoleToUser),
 );

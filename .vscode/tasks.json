@@ -1,0 +1,84 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Debug Server",
+      "type": "shell",
+      "command": "node",
+      "args": [
+        "--inspect=0.0.0.0:9229",
+        "--env-file=.env.development",
+        "server.js"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Start server with debugging enabled"
+    },
+    {
+      "label": "Start with Nodemon Debug",
+      "type": "shell",
+      "command": "nodemon",
+      "args": [
+        "--env-file=.env.development",
+        "--inspect=0.0.0.0:9229",
+        "server.js"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "detail": "Start server with nodemon and debugging"
+    },
+    {
+      "label": "Kill Node Processes",
+      "type": "shell",
+      "command": "taskkill",
+      "args": [
+        "/F",
+        "/IM",
+        "node.exe"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "detail": "Kill all running Node.js processes"
+    },
+    {
+      "label": "Check Debug Port",
+      "type": "shell",
+      "command": "netstat",
+      "args": [
+        "-ano",
+        "|",
+        "findstr",
+        ":9229"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "detail": "Check if debug port 9229 is in use"
+    }
+  ]
+}
