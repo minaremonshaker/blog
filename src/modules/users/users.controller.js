@@ -12,7 +12,7 @@ userRouter.get(
   "/",
   Auth,
   emailVerfyied,
-  authorize(["user:show_all"]),
+  authorize(),
   requestsAsyncHandler(userService.index),
 );
 
@@ -20,7 +20,6 @@ userRouter.post(
   "/",
   Auth,
   emailVerfyied,
-  authorize(["user:create"]),
   validation(schema.userCreateValidationSchema),
   requestsAsyncHandler(userService.store),
 );
@@ -28,7 +27,7 @@ userRouter.get(
   "/:id",
   Auth,
   emailVerfyied,
-  //authorize(["user:show_own"]),
+  authorize(["user:show_own"]),
   requestsAsyncHandler(userService.show),
 );
 
@@ -36,7 +35,6 @@ userRouter.put(
   "/:id",
   Auth,
   emailVerfyied,
-  authorize(["user:replace"]),
   validation(schema.replacevalidatioSchema),
   requestsAsyncHandler(userService.replace),
 );
@@ -44,7 +42,6 @@ userRouter.patch(
   "/:id",
   Auth,
   emailVerfyied,
-  authorize(["user:update", "user:update_own"]),
   validation(schema.updateValidationSchema),
   requestsAsyncHandler(userService.update),
 );
@@ -52,7 +49,6 @@ userRouter.delete(
   "/:id",
   Auth,
   emailVerfyied,
-  authorize(["user:delete", "user:delete_own"]),
   requestsAsyncHandler(userService.destroy),
 );
 userRouter.post(

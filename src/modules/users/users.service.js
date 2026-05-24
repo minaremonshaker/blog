@@ -20,14 +20,11 @@ export const index = async (req, res, next) => {
 
 export const show = async (req, res, next) => {
   const { id } = req.params;
-  const token = req.headers.authorization;
-  console.log(token)
   const user = await User.findById(id).populate("addresses");
   if (!user) return res.status(404).json({ success: false, message: "user not found" });
-  await optHelpers.generateOtp(user.email, "registration", token);
   return res.json({
     success: true,
-    message: "user retrivied succefully",
+    message: "user retrieved successfully",
     data: user,
   });
 };
@@ -45,7 +42,6 @@ export const store = async (req, res, next) => {
     state,
     country,
   } = req?.body || {};
-
   const createUser = await User.create({
     first_name,
     last_name,

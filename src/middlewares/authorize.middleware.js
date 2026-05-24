@@ -2,7 +2,7 @@ import { requestsAsyncHandler } from "../utils/asyncHandler.js";
 import User from "../db/models/users.model.js";
 import mongoose from "mongoose";
 
-const authorize = (permission) => {
+const authorize = (permissions) => {
   return requestsAsyncHandler(async (req, res, next) => {
     const { id } = req.params;
     const user = await req.user.populate({
@@ -11,20 +11,31 @@ const authorize = (permission) => {
       populate: { path: "permissions", select: "_id name" },
     });
 
-    const permissions = user.roles.flatMap((role) => role.permissions);
+    const roles = user.roles;
+    const perm = roles.flatMap((role) => role.permissions);
+    const providedPermissions = permissions;
 
-    const isAdmin = user.roles.some((role) => role.name === "admin");
-    const hasAdminManage = permissions.some((permission) => permission.name === "admin:manage");
-    if (isAdmin && hasAdminManage) {
-       return next()
+    if (
+      !permissions &&
+      perm.some((perm) => {
+        return perm.name === "admin:manage";
+      })
+    ) {
+      return next();
     }
-
-    console.log(permission)
-    
-
-    return res.status(401).json({success: false , message: "unauthorized"})
-
-    next()
+    if (
+      permissions &&
+      perm.some((perm) => providedPermissions.includes(perm.name) && perm.name.endsWith("_own"))
+    ) {
+      if (user._id.toString() === id) {
+        return next();
+      }
+      return res.status(403).json({ success: false, message: "Forbidden" });
+    }
+    if (permissions && perm.some((perm) => providedPermissions.includes(perm.name))) {
+      return next();
+    }
+    return res.status(403).json({ success: false, message: "Forbidden" });
   });
 };
 

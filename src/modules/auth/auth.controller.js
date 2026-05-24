@@ -17,7 +17,6 @@ authRouter.post(
   validation(schema.registerValidationSchema),
   requestsAsyncHandler(authService.register),
 );
-// authRouter.get("/activate/:token", tokenExpiration, requestsAsyncHandler(authService.varifay));
-// authRouter.post("/re-activate", Auth, requestsAsyncHandler(authService.reVarifay));
+
 
 export default authRouter;

@@ -2,12 +2,12 @@ import User from "../../db/models/users.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import sendEmail from "../../mails/emailsEmitter.mail.js";
+import Role from "../../db/models/roles.model.js";
 
 export const login = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email: email }).select("+password");
-  if (!user)
-    return res.status(404).json({ sucess: false, message: "user not found"});
+  if (!user) return res.status(404).json({ sucess: false, message: "user not found" });
   const passwordMatched = bcrypt.compareSync(password, user.password);
   if (!passwordMatched)
     return res.status(401).json({ sucess: false, message: "invalied credintials" });
@@ -23,8 +23,15 @@ export const login = async (req, res, next) => {
 
 export const register = async (req, res, next) => {
   const { first_name, last_name, email, username, password } = req.body;
-  const registerUser = await User.create({ first_name, last_name, email, username, password });
+  const userRole = await Role.findOne({ name: "user" });
+  const registerUser = await User.create({
+    first_name,
+    last_name,
+    email,
+    username,
+    password,
+    roles: [userRole._id],
+  });
   sendEmail.emit("register", registerUser);
   return res.json({ success: true, message: "user registed succefully", data: registerUser });
 };
-

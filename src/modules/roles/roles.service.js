@@ -46,7 +46,7 @@ export const assignPermissionsToRole = async(req, res, next) => {
   const {permissions} = req.body
   const role = await Roles.findById(id);
   if (!role) return res.status(404).json({ success: false, message: "no role found" });
-  role.permissions = permissions;
+  role.permissions.addToSet(...permissions);
   await role.save()
   return res.json({ success: true, message: "permissions assigned" });
 };

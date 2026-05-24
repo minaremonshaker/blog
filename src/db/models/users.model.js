@@ -29,12 +29,12 @@ userSchema.pre("save", async function () {
   }
 });
 
-userSchema.pre("save",  async function () {
-  if (!this.isModified("roles")) {
-    const userRole = await Roles.findOne({name:"user"})
-    this.roles = this.roles.push(userRole._id);
-  }
-});
+// userSchema.pre("save",  async function () {
+//   if (!this.isModified("roles")) {
+//     const userRole = await Roles.findOne({name:"user"})
+//     this.roles = this.roles.push(userRole._id);
+//   }
+// });
 
 userSchema.statics.smartPaginate = function (query) {
   const { search, searchBy, orderBy, includes, page = 1, limit = 10 } = query;
