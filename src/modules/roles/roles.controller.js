@@ -13,36 +13,28 @@ import auth from "../../middlewares/auth.middleware.js";
 
 const rolesRouter = Router();
 
-rolesRouter.get(
-  "/roles",
-  auth,
-  asyncHandlerHelper.requestsAsyncHandler(rolesService.index),
-);
-rolesRouter.get(
-  "/roles/:id",
-  auth,
-  asyncHandlerHelper.requestsAsyncHandler(rolesService.show),
-);
+rolesRouter.get("/", auth, asyncHandlerHelper.requestsAsyncHandler(rolesService.index));
+rolesRouter.get("/:id", auth, asyncHandlerHelper.requestsAsyncHandler(rolesService.show));
 rolesRouter.post(
-  "/roles",
+  "/",
   auth,
   validation(createRoleValidationSchema),
   asyncHandlerHelper.requestsAsyncHandler(rolesService.store),
 );
 rolesRouter.patch(
-  "/roles/:id",
+  "/:id",
   auth,
   validation(updateRoleValidationSchema),
   asyncHandlerHelper.requestsAsyncHandler(rolesService.update),
 );
 rolesRouter.delete(
-  "/roles/:id",
+  "/:id",
   auth,
   validation(deleteParamValidation),
   asyncHandlerHelper.requestsAsyncHandler(rolesService.destroy),
 );
 rolesRouter.post(
-  "/roles/:id/permissions",
+  "/:id/permissions",
   auth,
   validation(assignValidationShema),
   rolesService.assignPermissionsToRole,

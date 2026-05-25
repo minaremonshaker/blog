@@ -6,14 +6,16 @@ import otpMicroService from "./modules/opt-micro-service/otp.controller.js";
 import resetPassword from "./modules/forget-password/forget-password.controller.js";
 import rolesRouter from "./modules/roles/roles.controller.js";
 import postRouter from "./modules/posts/posts.controller.js";
+import rolePermissionController from './modules/roles-permission/roles-permission.controller.js'
 
 const bootstrap = async (app, express) => {
   app.use(express.json());
-  app.use("", authRouter);
-  app.use("", otpMicroService);
-  app.use("", rolesRouter);
-  app.use("", verifyEmail);
+  app.use("/auth", authRouter);
+  app.use("/otp", otpMicroService);
+  app.use("/verify", verifyEmail);
   app.use("", resetPassword);
+  app.use("/roles", rolesRouter);
+  app.use('/role' ,rolePermissionController)
   app.use("/users", userRouter);
   app.use("/posts", postRouter);
   app.use(globalErrorHandler);

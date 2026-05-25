@@ -1,13 +1,6 @@
 import Joi from "joi";
 import User from "../../db/models/users.model.js";
-import mongoose from "mongoose";
-
-const validateObjectId = (value, helpers) => {
-  if (!mongoose.isValidObjectId(value)) {
-    return helpers.message("please add a vaild object id");
-  }
-  return value;
-};
+import * as customValidator from "../../utils/customValidator.js";
 
 export const userCreateValidationSchema = Joi.object({
   first_name: Joi.string().empty("").required().trim().lowercase(),
@@ -67,9 +60,9 @@ export const searchingValidationSchema = Joi.object({
 });
 
 export const assignRoleToUserValidatonSchema = Joi.object({
-  id: Joi.string().custom(validateObjectId).empty("").required(),
+  id: Joi.string().custom(customValidator.objectIdValidation).empty("").required(),
   roles: Joi.array()
-    .items(Joi.string().custom(validateObjectId))
+    .items(Joi.string().custom(customValidator.objectIdValidation))
     .min(1)
     .required(),
 });

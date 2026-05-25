@@ -4,9 +4,9 @@ import auth from "../../middlewares/auth.middleware.js";
 
 const virefyEmailRouter = express.Router();
 
-virefyEmailRouter.get("/verify/:token", verifyService.verifyEmail);
+virefyEmailRouter.get("/:token", verifyService.verifyEmail);
 virefyEmailRouter.post(
-  "/verify/re-send-varifiacation-email",
+  "/re-send-varifiacation-email",
   auth,
   verifyService.re_sendVerifayEmail,
 );

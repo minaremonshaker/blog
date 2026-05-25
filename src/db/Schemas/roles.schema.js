@@ -1,7 +1,6 @@
 
 import mongoose from "mongoose";
-
-
+import Permission from "../models/permission.model.js";
 
 const schemaOptions = {
   timestamps: true,
@@ -11,7 +10,7 @@ const rulesSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'name is required'],
+      required: [true, "name is required"],
       unique: true,
     },
     permissions: {
@@ -19,16 +18,15 @@ const rulesSchema = mongoose.Schema(
         {
           type: mongoose.Types.ObjectId,
           ref: "permissions",
+          validate: {
+            validator: function (value) {
+              console.log(value);
+              return false;
+            },
+          },
         },
       ],
       default: [],
-      validate: {
-        validator: async function(value) {
-          const count = await mongoose.model('permissions').countDocuments({_id : {$in: value}})
-          return count === value.length;
-        },
-        message: props => `One or more permission IDs in [${props.value}] do not exist!`
-      }
     },
     description: {
       type: String,

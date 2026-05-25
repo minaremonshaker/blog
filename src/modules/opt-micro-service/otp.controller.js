@@ -9,13 +9,13 @@ import Auth from "../../middlewares/auth.middleware.js";
 const otpRouter = express.Router();
 
 otpRouter.post(
-  "/otp/generate",
+  "/generate",
   Auth,
   validation(otpGenerationValidation),
   asyncHandlersHelper.requestsAsyncHandler(otpService.generate),
 );
 otpRouter.post(
-  "/otp/verify",
+  "/verify",
   Auth,
   validation(otpVerficationValidation),
   asyncHandlersHelper.requestsAsyncHandler(otpService.verfiy),

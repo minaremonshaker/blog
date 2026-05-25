@@ -19,7 +19,7 @@ rulesSchema.statics.searchFindRole = async function (query) {
       return { [feild]: { $regex: new RegExp(`^${query.term}`), $options: "i" } };
     });
 
-  const user = await this.find(queryObject)
+  const roles = await this.find(queryObject)
     .sort(sort)
     .select(project)
     .populate(project)
@@ -27,14 +27,14 @@ rulesSchema.statics.searchFindRole = async function (query) {
     .skip(offset);
 
   return {
-    count: user.length,
+    count: roles.length,
     totalPages: totalPages,
     prev: prevPage,
     curr: page,
     next: nextPage,
     limit: limit,
     offset: offset,
-    users: user,
+    roles: roles,
   };
 };
 
