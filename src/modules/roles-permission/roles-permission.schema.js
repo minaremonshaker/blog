@@ -4,7 +4,7 @@ import * as customValidator from "../../utils/customValidator.js";
 const feilds = {
   id: Joi.string().empty("").required().custom(customValidator.objectIdValidation),
   permissions: Joi.array()
-    .items(Joi.string().custom(customValidator.objectIdValidation))
+    .items(Joi.string())
     .min(1)
     .required(),
 }

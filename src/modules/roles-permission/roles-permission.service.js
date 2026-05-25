@@ -6,7 +6,7 @@ export const assign = async (req, res, next) => {
   const { permissions } = req.body;
   const role = await Roles.findOne({_id:id})
   if(!role) return res.status(404).json({success: false, message: "user not found"});
-  role.permissions.addToSet(permissions);
+  role.permissions.addToSet(...permissions);
   await role.save()
   return res.status(201).json({ success: true, message: "permissions got assigned to role " });
 };

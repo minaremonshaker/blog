@@ -11,7 +11,7 @@ RolesPermissionsRouter.post(
   "/:id/permissions/assign",
   Auth,
   emailVerfyied,
-  validation(assignValidationSchema),
+    validation(assignValidationSchema),
   RolePermissionServie.assign,
 );
 

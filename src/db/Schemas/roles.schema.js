@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 import Permission from "../models/permission.model.js";
 
@@ -16,13 +15,14 @@ const rulesSchema = mongoose.Schema(
     permissions: {
       type: [
         {
-          type: mongoose.Types.ObjectId,
+          type: mongoose.Schema.Types.ObjectId,
           ref: "permissions",
           validate: {
-            validator: function (value) {
-              console.log(value);
-              return false;
+            validator: async function (value) {
+              const permissionExists = await Permission.exists({ _id: value });
+              return !!permissionExists;
             },
+            message: (props) => `The permission ID ${props.value} does not exist in the database!`,
           },
         },
       ],
@@ -36,5 +36,4 @@ const rulesSchema = mongoose.Schema(
   schemaOptions,
 );
 
-
-export default rulesSchema
+export default rulesSchema;

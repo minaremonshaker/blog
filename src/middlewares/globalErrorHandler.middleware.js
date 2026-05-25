@@ -5,9 +5,9 @@ import { da } from "@faker-js/faker";
 const globalErrorHandler = async (err, req, res, next) => {
   let errors = {};
 
-  if(process.env.NODE_ENV === "development") {
-    console.log(err);
-  }
+  // if(process.env.NODE_ENV === "development") {
+  //   console.log(err);
+  // }
 
   if (err.name === "ValidationError") {
     if (err.errors) {
@@ -25,7 +25,6 @@ const globalErrorHandler = async (err, req, res, next) => {
     return res.status(422).json({ success: false, message: "failed validations", errors });
   }
   if (isAxiosError(err)) {
-    
     if (err.response) {
       const { status, data } = err.response;
       const errors = data?.errors || null;
